@@ -5,6 +5,7 @@ const ApiError = require("./utils/ApiError");
 const { errorConverter, errorHandler } = require("./middlewares/error");
 const passport = require("passport");
 const { jwtStrategy } = require("./config/passport");
+const routes = require("./routes/v1");
 
 // Security
 const helmet = require("helmet");
@@ -42,6 +43,9 @@ passport.use("jwt", jwtStrategy);
 app.get("/", (req, res) => {
   res.send("Initial Page");
 });
+
+// v1 api routes
+app.use("/v1", routes);
 
 // send back a 404 error for any unknown api request
 app.use((_req, _res, next) => {
