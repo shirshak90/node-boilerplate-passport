@@ -34,7 +34,6 @@ const auth =
         { session: false },
         verifyCallback(req, resolve, reject, requiredRights)
       )(req, res, next);
-      console.log(authenticatedMiddleware);
     })
       .then(() => next())
       .catch((err) => next(err));
