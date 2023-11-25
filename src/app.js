@@ -1,5 +1,10 @@
 const express = require("express");
 const compression = require("compression");
+const httpStatus = require("http-status");
+const ApiError = require("./utils/ApiError");
+const { errorConverter, errorHandler } = require("./middlewares/error");
+const passport = require("passport");
+const { jwtStrategy } = require("./config/passport");
 
 // Security
 const helmet = require("helmet");
@@ -29,9 +34,24 @@ app.use(compression());
 app.use(cors());
 app.options("*", cors());
 
+// jwt authentication
+app.use(passport.initialize());
+passport.use("jwt", jwtStrategy);
+
 // Test initial route
 app.get("/", (req, res) => {
   res.send("Initial Page");
 });
+
+// send back a 404 error for any unknown api request
+app.use((_req, _res, next) => {
+  next(new ApiError(httpStatus.NOT_FOUND, "Not Found"));
+});
+
+// convert error to ApiError, if needed
+app.use(errorConverter);
+
+// handle error
+app.use(errorHandler);
 
 module.exports = app;
