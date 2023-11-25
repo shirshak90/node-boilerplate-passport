@@ -29,7 +29,7 @@ const auth =
   (...requiredRights) =>
   async (req, res, next) => {
     return new Promise((resolve, reject) => {
-      const authenticatedMiddleware = passport.authenticate(
+      passport.authenticate(
         "jwt",
         { session: false },
         verifyCallback(req, resolve, reject, requiredRights)
