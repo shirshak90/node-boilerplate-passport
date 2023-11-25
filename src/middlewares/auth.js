@@ -5,7 +5,6 @@ const { roleRights } = require("../config/roles");
 
 const verifyCallback =
   (req, resolve, reject, requiredRights) => async (err, user, info) => {
-    console.log({ err, info, user });
     if (err || info || !user) {
       return reject(
         new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate")
@@ -30,11 +29,12 @@ const auth =
   (...requiredRights) =>
   async (req, res, next) => {
     return new Promise((resolve, reject) => {
-      passport.authenticate(
+      const authenticatedMiddleware = passport.authenticate(
         "jwt",
         { session: false },
         verifyCallback(req, resolve, reject, requiredRights)
       )(req, res, next);
+      console.log(authenticatedMiddleware);
     })
       .then(() => next())
       .catch((err) => next(err));
