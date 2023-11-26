@@ -11,4 +11,4 @@ Includes JWT, custom validation and request validation.
 `POST /v1/auth/logout` - logout
 
 **User routes**:\
-`GET /v1/user` - get all users\
+`GET /v1/user` - get all users
